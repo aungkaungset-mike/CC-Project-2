@@ -1,0 +1,282 @@
+{
+  "members": [
+    {
+      "id": "mem-1",
+      "name": "Alex Rivera",
+      "role": "Team Lead & Cloud Architect",
+      "email": "alex.rivera@university.edu",
+      "avatarColor": "#6366f1",
+      "initials": "AR"
+    },
+    {
+      "id": "mem-2",
+      "name": "Priya Sharma",
+      "role": "Full Stack Developer",
+      "email": "priya.s@university.edu",
+      "avatarColor": "#ec4899",
+      "initials": "PS"
+    },
+    {
+      "id": "mem-3",
+      "name": "Jordan Chen",
+      "role": "Backend & DevOps Engineer",
+      "email": "jordan.chen@university.edu",
+      "avatarColor": "#06b6d4",
+      "initials": "JC"
+    },
+    {
+      "id": "mem-4",
+      "name": "Maya Patel",
+      "role": "UI/UX & Frontend Designer",
+      "email": "maya.patel@university.edu",
+      "avatarColor": "#10b981",
+      "initials": "MP"
+    },
+    {
+      "id": "mem-5",
+      "name": "Carlos Ortiz",
+      "role": "QA & Database Specialist",
+      "email": "carlos.o@university.edu",
+      "avatarColor": "#f59e0b",
+      "initials": "CO"
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "name": "Cloud-Based Student Management System",
+      "code": "CS-401",
+      "description": "Distributed web portal for student academic tracking, task delegation, cloud-hosted microservices and live project monitoring.",
+      "category": "Cloud Computing",
+      "startDate": "2026-09-30",
+      "deadline": "2026-10-24",
+      "status": "active",
+      "color": "#6366f1",
+      "members": [
+        "mem-1",
+        "mem-2",
+        "mem-3",
+        "mem-4",
+        "mem-5"
+      ],
+      "createdAt": "2026-09-30T12:08:23.192Z"
+    },
+    {
+      "id": "proj-2",
+      "name": "Autonomous Campus Robot Navigation",
+      "code": "ROB-302",
+      "description": "LiDAR and SLAM navigation algorithms embedded on robotic rover with real-time telemetry streaming to cloud backend.",
+      "category": "Robotics & AI",
+      "startDate": "2026-09-24",
+      "deadline": "2026-11-08",
+      "status": "active",
+      "color": "#06b6d4",
+      "members": [
+        "mem-1",
+        "mem-3",
+        "mem-5"
+      ],
+      "createdAt": "2026-09-24T12:08:23.192Z"
+    },
+    {
+      "id": "proj-3",
+      "name": "NextGen Smart Library Mobile App",
+      "code": "SE-310",
+      "description": "Cross-platform mobile application with QR book reservation, NFC study pod checkout, and automated fines notification.",
+      "category": "Software Engineering",
+      "startDate": "2026-09-14",
+      "deadline": "2026-10-12",
+      "status": "active",
+      "color": "#ec4899",
+      "members": [
+        "mem-2",
+        "mem-4"
+      ],
+      "createdAt": "2026-09-14T12:08:23.192Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task-101",
+      "projectId": "proj-1",
+      "title": "Design RESTful API for Cloud Project Management",
+      "description": "Define schemas for Projects, Tasks, Assignees and Status Transitions. Implement validation middleware.",
+      "assigneeId": "mem-3",
+      "priority": "high",
+      "category": "Backend",
+      "status": "completed",
+      "deadline": "2026-10-10",
+      "createdAt": "2026-10-02T12:08:23.192Z",
+      "updatedAt": "2026-10-10T12:08:23.192Z"
+    },
+    {
+      "id": "task-102",
+      "projectId": "proj-1",
+      "title": "Build Interactive Kanban Board & Task Cards",
+      "description": "Create responsive drag-and-drop columns (To Do, In Progress, Review, Completed) with modern glassmorphism aesthetic.",
+      "assigneeId": "mem-2",
+      "priority": "urgent",
+      "category": "Frontend",
+      "status": "in_progress",
+      "deadline": "2026-10-16",
+      "createdAt": "2026-10-06T12:08:23.192Z",
+      "updatedAt": "2026-10-13T12:08:23.192Z"
+    },
+    {
+      "id": "task-103",
+      "projectId": "proj-1",
+      "title": "Deploy to Cloud VM & Configure Nginx Proxy",
+      "description": "Write setup scripts for Ubuntu cloud VM instance, configure systemd daemon, SSL reverse proxy, and health checks.",
+      "assigneeId": "mem-1",
+      "priority": "urgent",
+      "category": "Cloud/DevOps",
+      "status": "review",
+      "deadline": "2026-10-15",
+      "createdAt": "2026-10-08T12:08:23.192Z",
+      "updatedAt": "2026-10-12T12:08:23.192Z"
+    },
+    {
+      "id": "task-104",
+      "projectId": "proj-1",
+      "title": "Implement Deadline Tracker & Overdue Alert Badges",
+      "description": "Calculate relative deadlines (Due Today, Tomorrow, Overdue) and display animated alert badges with filter controls.",
+      "assigneeId": "mem-4",
+      "priority": "medium",
+      "category": "UI/UX",
+      "status": "todo",
+      "deadline": "2026-10-18",
+      "createdAt": "2026-10-09T12:08:23.192Z",
+      "updatedAt": "2026-10-09T12:08:23.192Z"
+    },
+    {
+      "id": "task-105",
+      "projectId": "proj-1",
+      "title": "Automated Database Persistence & Backup Scripts",
+      "description": "Implement atomic JSON writing with fallback backup files and database seed reset utilities for evaluations.",
+      "assigneeId": "mem-5",
+      "priority": "medium",
+      "category": "Database",
+      "status": "completed",
+      "deadline": "2026-10-12",
+      "createdAt": "2026-10-04T12:08:23.192Z",
+      "updatedAt": "2026-10-12T12:08:23.192Z"
+    },
+    {
+      "id": "task-106",
+      "projectId": "proj-1",
+      "title": "Draft Final Semester Project Presentation Slides",
+      "description": "Summarize system architecture diagram, cloud deployment methodology, team contributions, and demo walkthrough.",
+      "assigneeId": "mem-1",
+      "priority": "high",
+      "category": "Documentation",
+      "status": "todo",
+      "deadline": "2026-10-22",
+      "createdAt": "2026-10-12T12:08:23.192Z",
+      "updatedAt": "2026-10-12T12:08:23.192Z"
+    },
+    {
+      "id": "task-201",
+      "projectId": "proj-2",
+      "title": "Calibrate LiDAR Sensor & Point Cloud Filters",
+      "description": "Run outdoor perimeter test to measure noise reduction performance under direct sunlight.",
+      "assigneeId": "mem-3",
+      "priority": "high",
+      "category": "Hardware/Robotics",
+      "status": "in_progress",
+      "deadline": "2026-10-19",
+      "createdAt": "2026-09-29T12:08:23.192Z",
+      "updatedAt": "2026-10-13T12:08:23.192Z"
+    },
+    {
+      "id": "task-202",
+      "projectId": "proj-2",
+      "title": "Implement Cloud Telemetry WebSocket Bridge",
+      "description": "Stream robot coordinate packets (X, Y, Theta, Battery %) to cloud dashboard over 4G/WiFi module.",
+      "assigneeId": "mem-1",
+      "priority": "urgent",
+      "category": "Cloud/DevOps",
+      "status": "todo",
+      "deadline": "2026-10-26",
+      "createdAt": "2026-10-09T12:08:23.192Z",
+      "updatedAt": "2026-10-09T12:08:23.192Z"
+    },
+    {
+      "id": "task-301",
+      "projectId": "proj-3",
+      "title": "Fix Library Barcode Scanning Crash on iOS 18",
+      "description": "Camera permission handler threw uncaught exception during cold boot barcode scanner invocation.",
+      "assigneeId": "mem-2",
+      "priority": "urgent",
+      "category": "Mobile Dev",
+      "status": "review",
+      "deadline": "2026-10-13",
+      "createdAt": "2026-10-07T12:08:23.192Z",
+      "updatedAt": "2026-10-13T12:08:23.192Z"
+    }
+  ],
+  "activities": [
+    {
+      "id": "act-c2d7f351",
+      "memberId": "mem-1",
+      "action": "DELETED_TASK",
+      "details": "Deleted task \"Test Cloud Deployment Verification Task\"",
+      "projectId": "proj-1",
+      "taskId": "task-b7dee382",
+      "timestamp": "2026-10-14T12:37:05.106Z"
+    },
+    {
+      "id": "act-547f1c4b",
+      "memberId": "mem-1",
+      "action": "MOVED_TASK",
+      "details": "Moved \"Test Cloud Deployment Verification Task\" to In Progress",
+      "projectId": "proj-1",
+      "taskId": "task-b7dee382",
+      "timestamp": "2026-10-14T12:34:04.346Z"
+    },
+    {
+      "id": "act-63e0b4b2",
+      "memberId": "mem-1",
+      "action": "CREATED_TASK",
+      "details": "Created task \"Test Cloud Deployment Verification Task\" and assigned to Priya Sharma",
+      "projectId": "proj-1",
+      "taskId": "task-b7dee382",
+      "timestamp": "2026-10-14T12:32:49.949Z"
+    },
+    {
+      "id": "act-1",
+      "memberId": "mem-1",
+      "action": "CREATED_PROJECT",
+      "details": "Created project \"Cloud-Based Student Management System (CS-401)\"",
+      "projectId": "proj-1",
+      "timestamp": "2026-09-30T12:08:23.192Z"
+    },
+    {
+      "id": "act-2",
+      "memberId": "mem-3",
+      "action": "COMPLETED_TASK",
+      "details": "Completed task \"Design RESTful API for Cloud Project Management\"",
+      "projectId": "proj-1",
+      "taskId": "task-101",
+      "timestamp": "2026-10-10T12:08:23.192Z"
+    },
+    {
+      "id": "act-3",
+      "memberId": "mem-2",
+      "action": "MOVED_TASK",
+      "details": "Moved \"Build Interactive Kanban Board\" to In Progress",
+      "projectId": "proj-1",
+      "taskId": "task-102",
+      "timestamp": "2026-10-13T12:08:23.192Z"
+    },
+    {
+      "id": "act-4",
+      "memberId": "mem-1",
+      "action": "MOVED_TASK",
+      "details": "Moved \"Deploy to Cloud VM & Configure Nginx Proxy\" to Review",
+      "projectId": "proj-1",
+      "taskId": "task-103",
+      "timestamp": "2026-10-14T10:08:23.192Z"
+    }
+  ],
+  "activeMemberId": "mem-1"
+}
