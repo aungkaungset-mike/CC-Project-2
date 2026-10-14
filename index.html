@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud-Based Student Project Management System</title>
+  <meta name="description" content="Collaborative cloud-based student project management system for university teams. Create projects, manage tasks, assign team members, track deadlines, and update status on a modern Kanban board.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core & Kanban Stylesheets -->
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/kanban.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Top Navigation Bar -->
+    <header class="app-navbar" role="banner">
+      <div class="brand-section">
+        <div class="brand-logo-icon">☁️</div>
+        <div class="brand-text">
+          <h1>CloudTask</h1>
+          <div class="brand-badge">
+            <span class="cloud-pulse"></span>
+            <span>Cloud Computing Project</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" role="navigation" aria-label="Main Navigation">
+        <button class="nav-tab-btn active" data-tab="kanban" onclick="App.switchTab('kanban')" id="tabBtnKanban">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"></rect><rect x="14" y="3" width="7" height="10" rx="1"></rect><rect x="14" y="17" width="7" height="4" rx="1"></rect></svg>
+          Kanban Board
+        </button>
+        <button class="nav-tab-btn" data-tab="projects" onclick="App.switchTab('projects')" id="tabBtnProjects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+          Projects Hub
+        </button>
+        <button class="nav-tab-btn" data-tab="analytics" onclick="App.switchTab('analytics')" id="tabBtnAnalytics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          Telemetry & Stats
+        </button>
+        <button class="nav-tab-btn" data-tab="team" onclick="App.switchTab('team')" id="tabBtnTeam">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Team Roster
+        </button>
+        <button class="nav-tab-btn" data-tab="activities" onclick="App.switchTab('activities')" id="tabBtnActivities">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          Activity Feed
+        </button>
+      </nav>
+
+      <!-- Nav Actions: VM Pill, Active Member Switcher, Quick Actions -->
+      <div class="nav-actions">
+        <!-- Cloud VM Telemetry Pill -->
+        <button class="cloud-vm-pill" onclick="App.openCloudModal()" title="View Free Cloud Deployment Guide & Telemetry">
+          <span>● Cloud Live</span>
+          <span style="opacity: 0.6;">(Guide)</span>
+        </button>
+
+        <!-- New Task Button -->
+        <button class="btn btn-sm btn-primary" onclick="Tasks.openCreateModal()" id="quickAddTaskBtn">
+          <span>+ Add Task</span>
+        </button>
+
+        <!-- Active Profile Switcher Dropdown -->
+        <div class="member-switcher-dropdown" id="memberDropdownContainer">
+          <button class="member-trigger-btn" onclick="Team.toggleDropdown()" id="memberProfileTrigger" title="Switch Team Member Profile">
+            <div class="avatar" id="navUserAvatar">AR</div>
+            <div class="member-info-nav">
+              <div class="member-name-nav" id="navUserName">Alex Rivera</div>
+              <div class="member-role-nav" id="navUserRole">Team Lead</div>
+            </div>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div class="dropdown-menu" id="memberDropdownMenu">
+            <div class="dropdown-header">Switch Active Team Member</div>
+            <div id="memberDropdownList">
+              <!-- Dynamically populated -->
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item" onclick="Team.openAddModal()">
+              <div class="avatar" style="background: rgba(255,255,255,0.1); width: 28px; height: 28px; font-size: 0.8rem;">+</div>
+              <div>
+                <div style="font-weight: 600; font-size: 0.82rem;">Add New Member</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Invite student to team</div>
+              </div>
+            </div>
+            <div class="dropdown-item" onclick="App.resetDemoData()">
+              <div class="avatar" style="background: rgba(244,63,94,0.15); color: #fb7185; width: 28px; height: 28px; font-size: 0.8rem;">↺</div>
+              <div>
+                <div style="font-weight: 600; font-size: 0.82rem; color: #fb7185;">Reset Demo Data</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted);">Restore sample state</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="app-main" role="main">
+
+      <!-- ==============================================
+           VIEW 1: KANBAN BOARD
+           ============================================== -->
+      <section class="tab-view active" id="view-kanban">
+        <!-- Subheader Controls Bar -->
+        <div class="control-bar" id="kanbanControls">
+          <!-- Project Filter -->
+          <div class="project-selector-wrapper">
+            <span class="control-label">Project:</span>
+            <select class="select-custom" id="projectFilterSelect" aria-label="Filter tasks by project">
+              <option value="all">📁 All Projects</option>
+            </select>
+          </div>
+
+          <!-- Search Box -->
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" class="search-input" id="taskSearchInput" placeholder="Search tasks, tags, or assignees..." aria-label="Search tasks">
+          </div>
+
+          <!-- Assignee Filter Chips -->
+          <div class="filter-group">
+            <span class="control-label">Assignee:</span>
+            <button class="filter-chip assignee-chip active" data-assignee="all">All Members</button>
+            <button class="filter-chip assignee-chip" data-assignee="my_tasks">👤 My Tasks</button>
+          </div>
+
+          <!-- Priority Filter Chips -->
+          <div class="filter-group">
+            <span class="control-label">Priority:</span>
+            <button class="filter-chip priority-chip active" data-priority="all">All</button>
+            <button class="filter-chip priority-chip" data-priority="urgent">🔥 Urgent</button>
+            <button class="filter-chip priority-chip" data-priority="high">🔺 High</button>
+            <button class="filter-chip priority-chip" data-priority="medium">⚡ Medium</button>
+            <button class="filter-chip priority-chip" data-priority="low">🟢 Low</button>
+          </div>
+
+          <!-- Add Task Button -->
+          <button class="btn btn-primary" onclick="Tasks.openCreateModal()" id="kanbanAddTaskBtn">
+            <span>+ Create Task</span>
+          </button>
+        </div>
+
+        <!-- 4-Column Kanban Board -->
+        <div class="kanban-board-container" id="kanbanBoard" aria-label="Task Management Kanban Board">
+          <!-- Dynamically populated by kanban.js -->
+        </div>
+      </section>
+
+      <!-- ==============================================
+           VIEW 2: PROJECTS HUB
+           ============================================== -->
+      <section class="tab-view" id="view-projects">
+        <div class="control-bar">
+          <div>
+            <h2 style="font-size: 1.3rem;">Student Engineering Projects</h2>
+            <p style="font-size: 0.85rem;">Manage active coursework projects, track sprint deadlines, and monitor completion rates.</p>
+          </div>
+          <button class="btn btn-primary" onclick="Projects.openCreateModal()" id="createNewProjectBtn">
+            <span>+ Create New Project</span>
+          </button>
+        </div>
+
+        <div class="projects-overview-grid" id="projectsGrid">
+          <!-- Dynamically populated by projects.js -->
+        </div>
+      </section>
+
+      <!-- ==============================================
+           VIEW 3: TELEMETRY & ANALYTICS
+           ============================================== -->
+      <section class="tab-view" id="view-analytics">
+        <div class="analytics-container">
+
+          <!-- Cloud VM Telemetry Banner -->
+          <div class="cloud-telemetry-banner">
+            <div class="telemetry-header">
+              <div class="telemetry-icon-box">☁️</div>
+              <div>
+                <h3 style="font-size: 1.15rem; color: var(--text-primary);">Cloud VM Instance Telemetry</h3>
+                <p style="font-size: 0.8rem; color: #6ee7b7;">Node.js Microservice & SQLite Data Store running on Virtual Machine</p>
+              </div>
+            </div>
+
+            <div class="telemetry-metrics-strip">
+              <div class="telemetry-metric-item">
+                <span class="telemetry-label">Hostname</span>
+                <span class="telemetry-val" id="telemetryHostname">cloud-vm-node</span>
+              </div>
+              <div class="telemetry-metric-item">
+                <span class="telemetry-label">OS Platform</span>
+                <span class="telemetry-val" id="telemetryPlatform">linux</span>
+              </div>
+              <div class="telemetry-metric-item">
+                <span class="telemetry-label">Server Uptime</span>
+                <span class="telemetry-val" id="telemetryUptime">--</span>
+              </div>
+              <div class="telemetry-metric-item">
+                <span class="telemetry-label">Memory Utilization</span>
+                <span class="telemetry-val" id="telemetryMemUsage">--</span>
+              </div>
+              <div class="telemetry-metric-item">
+                <span class="telemetry-label">vCPUs</span>
+                <span class="telemetry-val" id="telemetryCores">--</span>
+              </div>
+            </div>
+
+            <button class="btn btn-sm btn-outline" onclick="App.openCloudModal()" style="border-color: rgba(16,185,129,0.4); color: #6ee7b7;">
+              Deployment Guide ➔
+            </button>
+          </div>
+
+          <!-- KPI Summary Cards -->
+          <div class="kpi-cards-grid">
+            <div class="kpi-card">
+              <div class="kpi-icon primary">📋</div>
+              <div>
+                <div class="kpi-val" id="kpiTotalTasks">0</div>
+                <div class="kpi-label">Total Semester Tasks</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon success">✓</div>
+              <div>
+                <div class="kpi-val" id="kpiCompletedTasks" style="color: var(--emerald);">0</div>
+                <div class="kpi-label">Completed Tasks</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon primary">📊</div>
+              <div>
+                <div class="kpi-val" id="kpiCompletionRate" style="color: #818cf8;">0%</div>
+                <div class="kpi-label">Overall Completion Rate</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon warning">⚡</div>
+              <div>
+                <div class="kpi-val" id="kpiInProgress" style="color: var(--cyan);">0</div>
+                <div class="kpi-label">Tasks In Progress</div>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-icon danger">⚠️</div>
+              <div>
+                <div class="kpi-val" id="kpiOverdueTasks" style="color: var(--rose);">0</div>
+                <div class="kpi-label">Overdue Tasks</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workload & Visual Charts -->
+          <div class="analytics-dual-grid">
+            <div class="analytics-panel">
+              <h3 class="panel-title">👥 Team Member Task Allocation & Workload</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: -0.5rem;">Visual comparison of completed vs pending tasks per team member</p>
+              <div id="workloadBarsContainer" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 0.5rem;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <div class="analytics-panel">
+              <h3 class="panel-title">🎯 Quick Actions & Presentation Tools</h3>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: -0.5rem;">Helpful triggers for evaluating system workflows</p>
+              
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                <button class="btn btn-secondary" onclick="App.openCloudModal()">
+                  ☁️ Open Cloud VM Deployment Guide
+                </button>
+                <button class="btn btn-secondary" onclick="Tasks.openCreateModal()">
+                  ➕ Create Sample Task for Demo
+                </button>
+                <button class="btn btn-secondary" onclick="Projects.openCreateModal()">
+                  📁 Create New Project
+                </button>
+                <button class="btn btn-outline" style="border-color: rgba(244,63,94,0.3); color: #fb7185;" onclick="App.resetDemoData()">
+                  ↺ Reset All Demo Data to Defaults
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==============================================
+           VIEW 4: TEAM ROSTER
+           ============================================== -->
+      <section class="tab-view" id="view-team">
+        <div class="control-bar">
+          <div>
+            <h2 style="font-size: 1.3rem;">Team Collaboration Roster</h2>
+            <p style="font-size: 0.85rem;">Project team members, role assignments, and active task breakdown.</p>
+          </div>
+          <button class="btn btn-primary" onclick="Team.openAddModal()" id="addMemberBtn">
+            <span>+ Add Team Member</span>
+          </button>
+        </div>
+
+        <div class="team-grid" id="teamGrid">
+          <!-- Dynamically populated by team.js -->
+        </div>
+      </section>
+
+      <!-- ==============================================
+           VIEW 5: LIVE ACTIVITY FEED
+           ============================================== -->
+      <section class="tab-view" id="view-activities">
+        <div class="control-bar">
+          <div>
+            <h2 style="font-size: 1.3rem;">Project Audit Trail & Activity Log</h2>
+            <p style="font-size: 0.85rem;">Chronological record of task assignments, status transitions, and deadline updates.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="Analytics.renderActivities()">
+            <span>🔄 Refresh Feed</span>
+          </button>
+        </div>
+
+        <div class="activity-list" id="activityFeedList">
+          <!-- Dynamically populated by analytics.js -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==============================================
+         MODAL 1: CREATE / EDIT TASK
+         ============================================== -->
+    <div class="modal-backdrop" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="taskModalTitle">Create Task</h3>
+          <button class="modal-close-btn" onclick="Tasks.closeModal()" aria-label="Close dialog">✕</button>
+        </div>
+        <form id="taskForm" onsubmit="Tasks.handleFormSubmit(event)">
+          <div class="modal-body">
+            <input type="hidden" id="taskIdInput">
+
+            <div class="form-group">
+              <label class="form-label" for="taskTitleInput">Task Title *</label>
+              <input type="text" class="form-input" id="taskTitleInput" name="taskTitle" placeholder="e.g. Implement Cloud Storage Microservice" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="taskDescInput">Description / Requirements</label>
+              <textarea class="form-textarea" id="taskDescInput" name="taskDesc" placeholder="Specify technical requirements, acceptance criteria, or API schemas..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="taskProjectSelect">Course Project *</label>
+                <select class="form-select" id="taskProjectSelect" name="taskProject" required>
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="taskAssigneeSelect">Assignee (Team Member) *</label>
+                <select class="form-select" id="taskAssigneeSelect" name="taskAssignee" required>
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="taskCategoryInput">Category / Tag</label>
+                <input type="text" class="form-input" id="taskCategoryInput" name="taskCategory" placeholder="e.g. Frontend, Backend, Cloud/DevOps, Database">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="taskPrioritySelect">Priority Level</label>
+                <select class="form-select" id="taskPrioritySelect" name="taskPriority">
+                  <option value="low">🟢 Low</option>
+                  <option value="medium" selected>⚡ Medium</option>
+                  <option value="high">🔺 High</option>
+                  <option value="urgent">🔥 Urgent</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="taskDeadlineInput">Deadline (Due Date) *</label>
+                <input type="date" class="form-input" id="taskDeadlineInput" name="taskDeadline" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="taskStatusSelect">Current Status</label>
+                <select class="form-select" id="taskStatusSelect" name="taskStatus">
+                  <option value="todo">To Do</option>
+                  <option value="in_progress">In Progress</option>
+                  <option value="review">In Review</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="Tasks.closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="saveTaskSubmitBtn">Save Task</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL 2: CREATE / EDIT PROJECT
+         ============================================== -->
+    <div class="modal-backdrop" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+      <div class="modal-box">
+        <div class="modal-header">
+          <h3 id="projectModalTitle">Create Project</h3>
+          <button class="modal-close-btn" onclick="Projects.closeModal()" aria-label="Close dialog">✕</button>
+        </div>
+        <form id="projectForm" onsubmit="Projects.handleFormSubmit(event)">
+          <div class="modal-body">
+            <input type="hidden" id="projectIdInput">
+
+            <div class="form-group">
+              <label class="form-label" for="projectNameInput">Project Title *</label>
+              <input type="text" class="form-input" id="projectNameInput" name="projectName" placeholder="e.g. Distributed Cloud File Storage" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="projectCodeInput">Course Code</label>
+                <input type="text" class="form-input" id="projectCodeInput" name="projectCode" placeholder="e.g. CS-401">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="projectCategoryInput">Category / Subject</label>
+                <input type="text" class="form-input" id="projectCategoryInput" name="projectCategory" placeholder="e.g. Cloud Computing, AI, Web Dev">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="projectDescInput">Project Overview & Objectives</label>
+              <textarea class="form-textarea" id="projectDescInput" name="projectDesc" placeholder="Summary of project goals and architecture..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="projectStartDate">Start Date</label>
+                <input type="date" class="form-input" id="projectStartDate" name="projectStartDate">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="projectDeadline">Final Semester Deadline *</label>
+                <input type="date" class="form-input" id="projectDeadline" name="projectDeadline" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="projectColor">Theme Accent Color</label>
+              <select class="form-select" id="projectColor" name="projectColor">
+                <option value="#6366f1" selected>Indigo (Cloud & Web)</option>
+                <option value="#06b6d4">Cyan (Robotics & IoT)</option>
+                <option value="#10b981">Emerald (AI & Data Science)</option>
+                <option value="#ec4899">Pink (Mobile & Apps)</option>
+                <option value="#f59e0b">Amber (Security & DevOps)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Assign Team Members</label>
+              <div id="projectMembersCheckboxes" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 140px; overflow-y: auto; padding: 0.5rem; background: rgba(15,23,42,0.4); border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="Projects.closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="saveProjectSubmitBtn">Save Project</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL 3: ADD TEAM MEMBER
+         ============================================== -->
+    <div class="modal-backdrop" id="memberModal" role="dialog" aria-modal="true" aria-labelledby="memberModalTitle">
+      <div class="modal-box" style="max-width: 480px;">
+        <div class="modal-header">
+          <h3 id="memberModalTitle">Add Team Member</h3>
+          <button class="modal-close-btn" onclick="Team.closeAddModal()" aria-label="Close dialog">✕</button>
+        </div>
+        <form id="memberForm" onsubmit="Team.handleAddSubmit(event)">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label" for="memberNameInput">Full Name *</label>
+              <input type="text" class="form-input" id="memberNameInput" name="memberName" placeholder="e.g. Liam Zhang" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="memberRoleInput">Project Role</label>
+              <input type="text" class="form-input" id="memberRoleInput" name="memberRole" placeholder="e.g. Cloud Architect, QA Engineer, Frontend Lead">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="memberEmailInput">University Email</label>
+              <input type="email" class="form-input" id="memberEmailInput" name="memberEmail" placeholder="e.g. liam.z@university.edu">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="memberColorSelect">Avatar Color</label>
+              <select class="form-select" id="memberColorSelect" name="memberColor">
+                <option value="#6366f1">Indigo</option>
+                <option value="#ec4899">Pink</option>
+                <option value="#06b6d4">Cyan</option>
+                <option value="#10b981">Emerald</option>
+                <option value="#f59e0b">Amber</option>
+                <option value="#a855f7">Purple</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="Team.closeAddModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Member</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL 4: TASK DETAIL VIEW
+         ============================================== -->
+    <div class="modal-backdrop" id="taskDetailModal" role="dialog" aria-modal="true" aria-labelledby="detailTaskTitle">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="tag-pill" id="detailTaskCategory">Category</span>
+            <span class="priority-pill" id="detailTaskPriority">PRIORITY</span>
+          </div>
+          <button class="modal-close-btn" onclick="Tasks.closeDetailModal()" aria-label="Close dialog">✕</button>
+        </div>
+        <div class="modal-body">
+          <h2 id="detailTaskTitle" style="font-size: 1.3rem; margin-bottom: 0.75rem;">Task Title</h2>
+          <p id="detailTaskDesc" style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; background: rgba(15,23,42,0.4); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);"></p>
+
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Project</div>
+              <div id="detailTaskProject" style="font-weight: 600; color: var(--text-primary); margin-top: 0.2rem;">--</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Assignee</div>
+              <div id="detailTaskAssignee" style="font-weight: 600; color: var(--cyan); margin-top: 0.2rem;">--</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Deadline</div>
+              <div id="detailTaskDeadline" style="font-weight: 600; color: #fcd34d; margin-top: 0.2rem;">--</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Change Status</div>
+              <select class="form-select" id="detailTaskStatus" onchange="Tasks.handleDetailStatusChange(this.value)" style="margin-top: 0.2rem; padding: 0.35rem 0.65rem;">
+                <option value="todo">To Do</option>
+                <option value="in_progress">In Progress</option>
+                <option value="review">In Review</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="Tasks.closeDetailModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL 5: FREE CLOUD DEPLOYMENT GUIDE (NO CREDIT CARD)
+         ============================================== -->
+    <div class="modal-backdrop" id="cloudModal" role="dialog" aria-modal="true" aria-labelledby="cloudModalTitle">
+      <div class="modal-box" style="max-width: 680px;">
+        <div class="modal-header">
+          <h3 id="cloudModalTitle">☁️ Free Cloud VM Deployment Guide (No Credit Card)</h3>
+          <button class="modal-close-btn" onclick="App.closeCloudModal()" aria-label="Close dialog">✕</button>
+        </div>
+        <div class="modal-body deploy-modal-content">
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">
+            Deploy this university project online for free without requiring a credit card using any of the following 3 options:
+          </p>
+
+          <!-- Option 1: Render.com -->
+          <div style="background: rgba(15,23,42,0.6); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <h4 style="color: var(--emerald); font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>Option 1: Render.com Free Web Service</span>
+              <span class="tag-pill" style="border-color: var(--emerald); color: var(--emerald);">Zero Credit Card</span>
+            </h4>
+            <p style="font-size: 0.82rem; margin: 0.4rem 0;">1. Push this folder to a GitHub repository.<br>2. Sign up on <a href="https://render.com" target="_blank">Render.com</a> with GitHub (no card needed).<br>3. Click <strong>New +</strong> &rarr; <strong>Web Service</strong> &rarr; Select your repo &rarr; Build: <code>npm install</code>, Start: <code>npm start</code>. Done!</p>
+          </div>
+
+          <!-- Option 2: Free Cloudflare Tunnel -->
+          <div style="background: rgba(15,23,42,0.6); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <h4 style="color: var(--cyan); font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>Option 2: Instant Public Cloud Tunnel (Cloudflare)</span>
+              <span class="tag-pill" style="border-color: var(--cyan); color: var(--cyan);">100% Free / Instant URL</span>
+            </h4>
+            <p style="font-size: 0.82rem; margin: 0.4rem 0;">Expose this server with a live, global HTTPS URL from your laptop or VM without port forwarding:</p>
+            <div class="code-snippet-box">
+              npm run tunnel
+            </div>
+            <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.3rem;">Generates a secure live URL like <code>https://your-project.trycloudflare.com</code> to share with your professor!</p>
+          </div>
+
+          <!-- Option 3: AWS EC2 / Ubuntu Cloud VM -->
+          <div style="background: rgba(15,23,42,0.6); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+            <h4 style="color: #a5b4fc; font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>Option 3: AWS EC2 / Ubuntu Linux VM (1-Command Deploy)</span>
+            </h4>
+            <p style="font-size: 0.82rem; margin: 0.4rem 0;">If you have an AWS EC2 VM, AWS Academy Sandbox, or Linux server, run this script to install Node, PM2/Systemd, and Nginx automatically:</p>
+            <div class="code-snippet-box">
+              chmod +x setup-vm.sh && ./setup-vm.sh
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" onclick="App.closeCloudModal()">Got it!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Toast Alert Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="./js/api.js"></script>
+  <script src="./js/kanban.js"></script>
+  <script src="./js/projects.js"></script>
+  <script src="./js/tasks.js"></script>
+  <script src="./js/team.js"></script>
+  <script src="./js/analytics.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
